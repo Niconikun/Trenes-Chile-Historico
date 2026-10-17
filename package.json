@@ -1,0 +1,7 @@
+{
+  "homepage": "https://TU_USUARIO.github.io/mapa-trenes-chile",
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  }
+}
