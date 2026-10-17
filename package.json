@@ -1,5 +1,5 @@
 {
-  "homepage": "https://TU_USUARIO.github.io/mapa-trenes-chile",
+  "homepage": "https://niconikun.github.io/Trenes-Chile-Historico/",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
