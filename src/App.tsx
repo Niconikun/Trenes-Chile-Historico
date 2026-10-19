@@ -408,6 +408,26 @@ const RAIL_DB = [
   },
 ];
 
+// Estaciones principales por línea férrea (coordenadas aproximadas)
+const STATIONS_DB: Record<string, Array<[number, number, string]>> = {
+  "caldera-copiapo": [[-70.86, -27.07, "Caldera"], [-70.6, -27.25, "Barranquillas"], [-70.39, -27.37, "Copiapó"]],
+  "long-norte": [
+    [-69.9, -20.4, "Pintados"], [-70.4, -22.5, "Calama"], [-70.5, -24.3, "Chañaral"],
+    [-70.7, -26.0, "Diego de Almagro"], [-70.8, -28.6, "Vallenar"], [-71.25, -29.9, "La Serena"],
+    [-71.6, -31.2, "Ovalle"], [-71.2, -32.82, "La Calera"]
+  ],
+  "valpo-santiago": [[-71.6, -33.05, "Valparaíso"], [-71.3, -33.0, "Viña del Mar"], [-70.9, -32.8, "Quillota"], [-70.65, -33.1, "Lampa"], [-70.7, -33.45, "Santiago"]],
+  "long-sur-1": [[-70.7, -33.45, "Santiago"], [-70.75, -34.17, "Rancagua"], [-71.24, -34.98, "Curicó"], [-71.66, -35.43, "Talca"], [-71.8, -36.0, "San Javier"], [-72.1, -36.6, "Chillán"]],
+  "long-sur-2": [[-72.1, -36.6, "Chillán"], [-72.6, -37.0, "San Rosendo"], [-72.9, -37.28, "Laja"], [-73.0, -36.95, "Yumbel"], [-73.1, -36.72, "Talcahuano"]],
+  "long-sur-3": [[-72.9, -37.28, "San Rosendo"], [-72.7, -37.7, "Collipulli"], [-72.35, -38.23, "Victoria"], [-72.5, -38.5, "Temuco"]],
+  "trasandino": [[-70.6, -32.83, "Los Andes"], [-70.35, -32.8, "Río Blanco"], [-70.05, -32.82, "Juncal"]],
+  "arica-lapaz": [[-70.3, -18.48, "Arica"], [-69.95, -18.3, "Chacalluta"], [-69.7, -18.0, "Visviri"], [-69.4, -17.9, "La Paz"]],
+  "fcab": [[-70.4, -23.65, "Antofagasta"], [-69.8, -23.35, "Mejillones"], [-69.3, -22.4, "Calama"], [-68.5, -21.4, "Ollagüe"]],
+  "melipilla": [[-70.7, -33.45, "Santiago"], [-70.85, -33.6, "San Bernardo"], [-71.0, -33.8, "Buin"], [-71.2, -33.99, "Melipilla"]],
+  "talca-constitucion": [[-71.66, -35.43, "Talca"], [-71.9, -35.3, "San Clemente"], [-72.1, -35.27, "Maule"], [-72.3, -35.33, "Constitución"]],
+  "coronel": [[-72.9, -36.83, "Concepción"], [-73.15, -37.03, "Coronel"], [-73.15, -37.08, "Lota"], [-73.25, -37.3, "Lota Alto"], [-73.35, -37.47, "Curanilahue"]],
+};
+
 const CATS = {
   "troncal-sur": { label: "Troncal Red Sur (EFE)", color: "#1d4ed8" },
   "troncal-norte": { label: "Longitudinal Norte", color: "#d97706" },
@@ -467,7 +487,13 @@ export default function App() {
   const [showGhost, setShowGhost] = useState(true);
   const [selected, setSelected] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [showStations, setShowStationsState] = useState(true);
   const mapRef = useRef<SVGSVGElement | null>(null);
+  const svgContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!playing) return;
@@ -479,6 +505,73 @@ export default function App() {
     }, 90);
     return () => clearInterval(t);
   }, [playing]);
+
+  // Zoom and pan handlers
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+    const newZoom = Math.max(0.5, Math.min(zoom * delta, 10));
+    
+    // Zoom towards mouse position
+    const svg = mapRef.current;
+    if (svg) {
+      const rect = svg.getBoundingClientRect();
+      const mouseX = (e.clientX - rect.left) / rect.width * 420 - 10;
+      const mouseY = (e.clientY - rect.top) / rect.height * 1100 - 10;
+      
+      const newPanX = pan.x - (mouseX - pan.x) * (newZoom - zoom) / zoom;
+      const newPanY = pan.y - (mouseY - pan.y) * (newZoom - zoom) / zoom;
+      
+      setZoom(newZoom);
+      setPan({ x: newPanX, y: newPanY });
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button === 0) { // Left mouse button
+      setIsPanning(true);
+      const svg = mapRef.current;
+      if (svg) {
+        const rect = svg.getBoundingClientRect();
+        setDragStart({
+          x: (e.clientX - rect.left) / rect.width * 420 - 10 - pan.x,
+          y: (e.clientY - rect.top) / rect.height * 1100 - 10 - pan.y
+        });
+      }
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isPanning) return;
+    const svg = mapRef.current;
+    if (svg) {
+      const rect = svg.getBoundingClientRect();
+      const currentX = (e.clientX - rect.left) / rect.width * 420 - 10;
+      const currentY = (e.clientY - rect.top) / rect.height * 1100 - 10;
+      setPan({
+        x: currentX - dragStart.x,
+        y: currentY - dragStart.y
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsPanning(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsPanning(false);
+  };
+
+  // Reset zoom/pan
+  const resetView = () => {
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  };
+
+  // Determine if cities/stations should be shown based on zoom level
+  const showLabels = zoom >= 1;
+  const showStationsFinal = showStations && zoom >= 1.5;
 
   const lineState = (l) =>
     l.opened <= year && (l.closed === null || year <= l.closed) ? "active"
@@ -564,6 +657,10 @@ export default function App() {
             <input type="checkbox" checked={showGhost} onChange={(e) => setShowGhost(e.target.checked)} className="accent-slate-500" />
             Mostrar vías ya cerradas (fantasma)
           </label>
+          <label className="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer">
+            <input type="checkbox" checked={showStations} onChange={(e) => setShowStationsState(e.target.checked)} className="accent-slate-500" />
+            Mostrar estaciones
+          </label>
           <div className="ml-auto text-sm text-slate-700">
             <span className="font-semibold tabular-nums">{activeCount}</span> líneas ·{" "}
             <span className="font-semibold tabular-nums">{activeKm.toLocaleString("es-CL")}</span> km de red en {year}
@@ -574,15 +671,34 @@ export default function App() {
       <div className="flex flex-col lg:flex-row gap-4 p-4 lg:p-6 max-w-[1400px] mx-auto">
         {/* Mapa */}
         <div className="flex-1 bg-white rounded-xl shadow-md overflow-hidden">
-          <div className="max-h-[75vh] overflow-auto">
-            <svg ref={mapRef} viewBox="-10 -10 420 1100" className="w-full block" style={{ minWidth: 320 }}>
-              <rect x={-10} y={-10} width={420} height={1100} fill="#eef6fb" />
+          <div 
+            ref={svgContainerRef}
+            className="max-h-[75vh] overflow-auto relative"
+          >
+            <svg 
+              ref={mapRef} 
+              viewBox="-10 -10 420 1100" 
+              className="w-full block" 
+              style={{ minWidth: 320, cursor: isPanning ? 'grabbing' : 'grab' }}
+              onWheel={handleWheel}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseLeave}
+            >
+              <defs>
+                <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="1" dy="1" stdDeviation="2" floodColor="rgba(0,0,0,0.3)" />
+                </filter>
+              </defs>
+              <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
+                <rect x={-10} y={-10} width={420} height={1100} fill="#eef6fb" />
               {/* Contorno de Chile */}
-              <polygon points={outlinePath} fill="#f5f0e6" stroke="#9ca3af" strokeWidth={1.2} />
+              <polygon points={outlinePath} fill="#f5f0e6" stroke="#9ca3af" strokeWidth={1.2 / zoom} />
               {/* Líneas cerradas (fantasmas) */}
               {showGhost && visible.filter((l) => lineState(l) === "closed").map((l) => (
                 <polyline key={"g" + l.id} points={polyline(l.coords)} fill="none" stroke="#94a3b8"
-                  strokeWidth={1.5} strokeDasharray="4 4" opacity={0.6} />
+                  strokeWidth={1.5 / zoom} strokeDasharray="4 4" opacity={0.6} />
               ))}
               {/* Líneas activas */}
               {visible.filter((l) => lineState(l) === "active").map((l) => (
@@ -590,54 +706,103 @@ export default function App() {
                   <polyline
                     points={polyline(l.coords)}
                     fill="none"
-                    stroke={CATS[l.cat].color}
-                    strokeWidth={hovered === l.id || selected === l.id ? 6 : 3.5}
+                    stroke={CATS[l.cat as keyof typeof CATS].color}
+                    strokeWidth={(hovered === l.id || selected === l.id ? 6 : 3.5) / zoom}
                     strokeLinecap="round"
                     className="cursor-pointer transition-all"
                     opacity={0.95}
                     onMouseEnter={() => setHovered(l.id)}
                     onMouseLeave={() => setHovered(null)}
-                    onClick={() => setSelected(l)}
+                    onClick={() => setSelected(l.id)}
                   />
                   {/* zona de clic amplia */}
                   <polyline
                     points={polyline(l.coords)}
                     fill="none"
                     stroke="transparent"
-                    strokeWidth={12}
+                    strokeWidth={12 / zoom}
                     className="cursor-pointer"
                     onMouseEnter={() => setHovered(l.id)}
                     onMouseLeave={() => setHovered(null)}
-                    onClick={() => setSelected(l)}
+                    onClick={() => setSelected(l.id)}
                   />
                 </g>
               ))}
-              {/* Ciudades */}
-              {CITIES.map(([name, lon, lat]) => {
-                const [x, y] = project([lon, lat]);
+              
+              {/* Estaciones de tren (solo visibles con zoom) */}
+              {showStationsFinal && visible.map((l) => {
+                const stations = STATIONS_DB[l.id as keyof typeof STATIONS_DB];
+                if (!stations) return null;
+                return stations.map(([lon, lat, name], idx) => {
+                  const [x, y] = project([lon, lat]);
+                  const isActive = lineState(l) === "active";
+                  return (
+                    <g key={`${l.id}-station-${idx}`}>
+                      <circle 
+                        cx={x} 
+                        cy={y} 
+                        r={isActive ? 3.5 / zoom : 2.5 / zoom}
+                        fill={isActive ? CATS[l.cat as keyof typeof CATS].color : "#94a3b8"}
+                        stroke="white" 
+                        strokeWidth={0.5 / zoom}
+                        filter={isActive ? "url(#shadow)" : "none"}
+                      />
+                      {zoom > 2 && (
+                        <text 
+                          x={x + 4} 
+                          y={y - 2} 
+                          fontSize={8 / zoom}
+                          fill="#475569"
+                          fontWeight="bold"
+                        >{name}</text>
+                      )}
+                    </g>
+                  );
+                });
+              })}
+              
+              {/* Ciudades (solo visibles con suficiente zoom) */}
+              {showLabels && CITIES.map(([name, lon, lat]) => {
+                const [x, y] = project([lon as number, lat as number]);
                 return (
                   <g key={name}>
-                    <circle cx={x} cy={y} r={2.6} fill="#334155" />
-                    <text x={x + 5} y={y + 2.5} fontSize={9} fill="#475569">{name}</text>
+                    <circle cx={x} cy={y} r={2.6 / zoom} fill="#334155" />
+                    {zoom > 1.2 && (
+                      <text x={x + 5} y={y + 2.5} fontSize={9 / zoom} fill="#475569">{name}</text>
+                    )}
                   </g>
                 );
               })}
+              
               {/* Tooltip flotante */}
               {hovered && (() => {
                 const l = RAIL_DB.find((r) => r.id === hovered);
+                if (!l) return null;
                 const [x, y] = project(l.coords[Math.floor(l.coords.length / 2)]);
                 return (
                   <g>
                     <rect x={x + 8} y={y - 30} width={Math.min(230, 24 + l.name.length * 5.6)} height={34} rx={5} fill="#0f172a" opacity={0.92} />
-                    <text x={x + 16} y={y - 17} fontSize={10} fill="#fff" fontWeight="bold">{l.name}</text>
-                    <text x={x + 16} y={y - 6} fontSize={9} fill="#cbd5e1">{fmt(l.opened)} – {fmt(l.closed)} · {l.km} km</text>
+                    <text x={x + 16} y={y - 17} fontSize={10 / zoom} fill="#fff" fontWeight="bold">{l.name}</text>
+                    <text x={x + 16} y={y - 6} fontSize={9 / zoom} fill="#cbd5e1">{fmt(l.opened)} – {fmt(l.closed)} · {l.km} km</text>
                   </g>
                 );
               })()}
+              </g>
             </svg>
+            {/* Reset zoom button */}
+            {zoom !== 1 && (
+              <button
+                onClick={resetView}
+                className="absolute bottom-4 right-4 bg-white shadow-lg rounded-full p-2 hover:bg-slate-50 transition z-10"
+                style={{ transform: 'translate(-50%, -50%)' }}
+              >
+                <span className="text-lg">🔍</span>
+              </button>
+            )}
           </div>
           <p className="text-[11px] text-slate-400 px-4 py-2 border-t">
-            Mapa estilizado: trazados y contornos aproximados. Pulsa una línea para ver su ficha.
+            Mapa estilizado: trazados y contornos aproximados. Pulsa una línea para ver su ficha. 
+            <strong>Rueda del mouse para hacer zoom, arrastrar para mover el mapa.</strong>
           </p>
         </div>
 
@@ -676,6 +841,8 @@ export default function App() {
                 <li>Las líneas <b>punteadas grises</b> son vías ya cerradas en el año mostrado.</li>
                 <li>Filtra por tipo de vía con los botones de colores.</li>
                 <li>Pasa el mouse o haz clic sobre una línea para ver su ficha histórica.</li>
+                <li><b>Rueda del mouse</b> para hacer zoom, <b>arrastra</b> para mover el mapa.</li>
+                <li>Al hacer zoom, verás <b>estaciones</b> y <b>ciudades</b> con más detalle.</li>
               </ul>
             </div>
           )}
