@@ -5,12 +5,15 @@ import chileGeoJson from './chile-outline.json';
 // Type for coordinate pairs [longitude, latitude]
 export type Coordinate = [number, number];
 
+// Re-export railway data
+export { getRailways, RAILWAYS, type Railway } from './railways';
+
 /**
  * Extracts the outline coordinates of Chile from the GeoJSON file.
- * The GeoJSON contains a MultiPolygon, and we extract the outer boundary
- * of the first (main) polygon.
+ * The GeoJSON contains a MultiPolygon with mainland and all islands.
+ * Returns all outer rings of all polygons in the MultiPolygon.
  */
-export function getChileOutline(): Coordinate[] {
+export function getChileOutline(): Coordinate[][] {
   try {
     // The GeoJSON is a FeatureCollection
     const featureCollection = chileGeoJson as any;
@@ -28,35 +31,37 @@ export function getChileOutline(): Coordinate[] {
       return [];
     }
 
-    // Handle MultiPolygon
+    // Handle MultiPolygon - return ALL outer rings
     if (geometry.type === 'MultiPolygon') {
-      const coordinates = geometry.coordinates as number[][][];
+      const allPolygons: Coordinate[][] = [];
+      const coordinates = geometry.coordinates as number[][][][];
       
-      // Get the first polygon (mainland Chile)
-      const firstPolygon = coordinates[0];
-      
-      if (!firstPolygon || firstPolygon.length === 0) {
-        console.warn('No polygon data found');
-        return [];
-      }
-
-      // The first ring is the outer boundary
-      const outerRing = firstPolygon[0] as Coordinate[];
-      
-      // Clean up the coordinates: ensure they are [lon, lat] pairs
-      return outerRing.map((coord: number[]) => {
-        if (Array.isArray(coord) && coord.length >= 2) {
-          return [coord[0], coord[1]] as Coordinate;
+      for (const polygon of coordinates) {
+        if (polygon.length > 0) {
+          // First ring is the outer boundary
+          const outerRing = polygon[0] as number[][];
+          
+          // Clean up the coordinates: ensure they are [lon, lat] pairs
+          const cleanedRing = outerRing.map((coord: number[]) => {
+            if (Array.isArray(coord) && coord.length >= 2) {
+              return [coord[0], coord[1]] as Coordinate;
+            }
+            return [0, 0] as Coordinate;
+          });
+          
+          allPolygons.push(cleanedRing);
         }
-        return [0, 0] as Coordinate;
-      });
+      }
+      
+      return allPolygons;
     }
     
     // Handle simple Polygon
     if (geometry.type === 'Polygon') {
       const coordinates = geometry.coordinates as number[][][];
       if (coordinates.length > 0) {
-        return coordinates[0].map((coord: number[]) => [coord[0], coord[1]] as Coordinate);
+        const cleanedRing = coordinates[0].map((coord: number[]) => [coord[0], coord[1]] as Coordinate);
+        return [cleanedRing];
       }
     }
 
@@ -72,7 +77,7 @@ export function getChileOutline(): Coordinate[] {
 /**
  * Get the Chile outline, falling back to hardcoded data if needed.
  */
-export function getChileOutlineWithFallback(): Coordinate[] {
+export function getChileOutlineWithFallback(): Coordinate[][] {
   const outline = getChileOutline();
   if (outline.length > 0) {
     return outline;
@@ -106,3 +111,6 @@ export function getRailroadFeatures(): RailroadFeature[] {
 
 // Re-export raw railroads data for advanced use cases
 export { default as railroadsRaw } from './railroads.json';
+
+// Export the processed railways with metadata
+export { getRailways, RAILWAYS, type Railway } from './railways';

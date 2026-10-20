@@ -1,0 +1,94 @@
+id,name,cat,op,gauge,km,opened,closed,desc,notes,coords_count,region_guess
+"auto-0","Empalme Mapocho - Norte",ramal,,1.676 mm,0,,,"Empalme Ramal Yungay - Mapocho. Levantado en casi toda su extension",,44,Santiago
+"auto-1","Empalme Yungay-Sur",ramal,,1.676 mm,0,,,"Via ferrea que servia de empalme de Mapocho hacia el sur",,11,Santiago
+"auto-2","Pista de Emergencia",ramal,,1.676 mm,0,,,"Estacion Enrique Meiggs, Pista de Emergencia, para los trenes que no pudieran frenar a tiempo.",,28,Santiago
+"auto-3","Ramal LLAYLLAY - LOS ANDES",ramal,,1.676 mm,0,,,,"",219,Central Chile
+"auto-4","Tunel Las Cuevas",troncal-sur,,1.676 mm,0,,,,,176,Andes Border
+"auto-5","VIA SUMERGIDA EMBALSE POTRERILLOS",ramal,,1.676 mm,0,,,,"",8,Central Chile
+"auto-6","Via Tun. LAS CUEVAS - MENDOZA",internacional,,1.000 mm,0,,,,"",352,Andes Border
+"auto-7","Variante a Estacion de Transferencia",ramal,,1.676 mm,0,,,,"",126,Central Chile
+"auto-8","Variante Portezuelo Amarillo",ramal,,1.676 mm,0,,,,"",135,Andes Border
+"auto-9","subramal RIO BLANCO - SALADILLO",ramal,,1.676 mm,0,,,,"",223,Andes Border
+"auto-10","Ruta sin titulo",ramal,,1.676 mm,0,,,,"",5,Unknown
+"auto-11","Ruta sin titulo",ramal,,1.676 mm,0,,,,"",2,Unknown
+"auto-12","Antiguo Trazado por Quillota",troncal-sur,,1.676 mm,0,,,,"",77,Central Chile
+"auto-13","Sub-Ramal RITOQUE-LAS VENTANAS",ramal,,1.676 mm,0,,,,"",14,Coastal Chile
+"auto-14","Sector Paso Hondo - Via B",ramal,,1.676 mm,0,,,,"",28,Central Chile
+"auto-15","RED TRONCAL SUR",troncal-sur,,1.676 mm,0,,,,"",1471,Central/South Chile
+"auto-16","",ramal,,1.676 mm,0,,,,"Empty name - DELETE or RENAME",,0,Unknown
+"auto-17","Ramal PAINE a TALAGANTE",ramal,,1.676 mm,0,,,,"",245,Central Chile
+"auto-18","Ramal Rancagua - Coltauco",ramal,,1.676 mm,0,,,,"",71,Central Chile
+"auto-19","Ruta Tentativa a SEWELL",ramal,,1.676 mm,0,,,,"",13,Central Chile
+"auto-20","Ramal Particular Rancagua - Sewell",ramal,,1.676 mm,0,,,,"",253,Central Chile
+"auto-21","RAMAL PELEQUEN - EL MANZANO",ramal,,1.676 mm,0,,,,"",102,Central Chile
+"auto-22","Ex-Estacion Palmilla",ramal,,1.676 mm,0,,,,"",4,Central Chile
+"auto-23","ANTIGUO TRAZADO CHIMBARONGO-TENO",ramal,,1.676 mm,0,,,,"",24,Central Chile
+"auto-24","Ex-Ramal Linares a Yerbas Buenas y Colbun",ramal,,1.676 mm,0,,,,"",36,Central Chile
+"auto-25","Ramal PARRAL-CAUQUENES",ramal,,1.676 mm,0,,,,"",233,Central Chile
+"auto-26","Empalme a Celulosa Nueva Aldea",ramal,,1.676 mm,0,,,,"",22,Central Chile
+"auto-27","Antiguo Trazado General Cruz",ramal,,1.676 mm,0,,,,"",29,Central Chile
+"auto-28","Ramal Monte Aguila-Polcura",ramal,,1.676 mm,0,,,,"",15,South Chile
+"auto-29","Estacion El Arenal",ramal,,1.676 mm,0,,,,"",2,Unknown
+"auto-30","Ruta sin titulo",ramal,,1.676 mm,0,,,,"",11,Unknown
+"auto-31","Ramal Coigue-Nacimiento",ramal,,1.676 mm,0,,,,"",162,South Chile
+"auto-32","Ramal Renaico-Traiguen",ramal,,1.676 mm,0,,,,"",164,South Chile
+"auto-33","Ramal Renaico-Traiguen",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,164,South Chile
+"auto-34","Ex-Ramal SABOYA-CAPITAN PASTENE",ramal,,1.676 mm,0,,,,"",7,South Chile
+"auto-35","Ruta sin titulo",ramal,,1.676 mm,0,,,,"",1,Unknown
+"auto-36","Ramal QUINO-GALVARINO",ramal,,1.676 mm,0,,,,"",44,South Chile
+"auto-37","Ramal Pua a Lonquimay",ramal,,1.676 mm,0,,,,"",53,South Chile
+"auto-38","Ramal CAJON-CHERQUENCO",ramal,,1.676 mm,0,,,,"",87,South Chile
+"auto-39","Ramal TEMUCO-CARAHUE",ramal,,1.676 mm,0,,,,"",98,South Chile
+"auto-40","Ramal FREIRE-TOLTEN",ramal,,1.676 mm,0,,,,"",25,South Chile
+"auto-41","Ramal FREIRE-CUNCO",ramal,,1.676 mm,0,,,,"",37,South Chile
+"auto-42","Linea 1",ramal,,1.676 mm,0,,,,"",16,South Chile
+"auto-43","Ramal Loncoche-Villarrica",ramal,,1.676 mm,0,,,,"",78,South Chile
+"auto-44","Ramal LANCO-PANGUIPULLI",ramal,,1.676 mm,0,,,,"",127,South Chile
+"auto-45","Ramal LANCO-PANGUIPULLI",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,127,South Chile
+"auto-46","Ramal Antilhue - Valdivia",ramal,,1.676 mm,0,,,"Matched with 'antilhue' in curated data - verify",,40,South Chile
+"auto-47","Ramal LOS LAGOS-RINIHUE",ramal,,1.676 mm,0,,,,"",46,South Chile
+"auto-48","Ramal LA UNION-LAGO RANCO",ramal,,1.676 mm,0,,,,"",102,South Chile
+"auto-49","Sub-Ramal CRUCERO-ENTRE LAGOS",ramal,,1.676 mm,0,,,,"",33,South Chile
+"auto-50","Ex-Ramal Osorno-Puerto Octay",ramal,,1.676 mm,0,,,,"",243,South Chile
+"auto-51","Ex-Ramal Osorno-Puerto Octay, empalme sur",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,348,South Chile
+"auto-52","Ramal CORTE ALTO-LOS MUERMOS",ramal,,1.676 mm,0,,,,"",204,South Chile
+"auto-53","Empalme Oriente al Sur",troncal-sur,,1.676 mm,0,,,,"",217,South Chile
+"auto-54","Antiguo trazado sector Itahue",troncal-sur,,1.676 mm,0,,,,"",60,South Chile
+"auto-55","Antiguo trazado sector Rio Claro-Camarico",troncal-sur,,1.676 mm,0,,,,"",13,South Chile
+"auto-56","FFCC del Llano del Maipo",minero,,1.435 mm,0,,,,"",218,Central Chile
+"auto-57","Ferrocarril Militar de PUENTE ALTO a EL VOLCAN",minero,,1.676 mm,0,,,,"",198,Central Chile
+"auto-58","Red Troncal Norte",troncal-norte,,1.000 mm,0,,,,"",3294,Northern Chile
+"auto-59","Antiguo Trazado Red Troncal Norte",troncal-norte,,1.000 mm,0,,,,"",567,Northern Chile
+"auto-60","Ex-Ramal de QUINQUIMO a PAPUDO",ramal,,1.676 mm,0,,,,"",27,Coastal Chile
+"auto-61","Ramal CHOAPA-SALAMANCA",ramal,,1.676 mm,0,,,,"",222,Northern Chile
+"auto-62","Ramal CHOAPA-SALAMANCA",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,222,Northern Chile
+"auto-63","Antiguo trazado sector Alcaparrosa",troncal-norte,,1.000 mm,0,,,,"",55,Northern Chile
+"auto-64","Tramo acceso estacion Ovalle",troncal-norte,,1.000 mm,0,,,,"",18,Northern Chile
+"auto-65","Ramal a Puerto de Coquimbo",ramal,,1.676 mm,0,,,,"",172,Coastal Chile
+"auto-66","Ramal a Puerto de Coquimbo",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,172,Coastal Chile
+"auto-67","FFCC de Elqui",troncal-norte,,1.000 mm,0,,,,"",61,Northern Chile
+"auto-68","Ramal LLANOS DE SOTO-HUASCO",ramal,,1.676 mm,0,,,,"",214,Coastal Chile
+"auto-69","Ramal LLANOS DE SOTO-HUASCO",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,214,Coastal Chile
+"auto-70","Ramal TOLEDO-CALDERA",ramal,,1.676 mm,0,,,,"",161,Northern Chile
+"auto-71","Ramal EMPALME 2 a CHANARAL",ramal,,1.676 mm,0,,,,"",61,Northern Chile
+"auto-72","Ramal EMPALME 2 a CHANARAL",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,61,Northern Chile
+"auto-73","The Taltal Railway Company",minero,,1.435 mm,0,,,,"",57,Coastal Chile
+"auto-74","Ramal a PORTEZUELO",ramal,,1.676 mm,0,,,,"",25,Northern Chile
+"auto-75","Ruta sin titulo",ramal,,1.676 mm,0,,,,"",14,Unknown
+"auto-76","Ruta sin titulo",ramal,,1.676 mm,0,,,,"",6,Unknown
+"auto-77","Ruta sin titulo",ramal,,1.676 mm,0,,,,"",3,Unknown
+"auto-78","FCAB y FCAS",internacional,,1.000 mm,0,,,"FCAB and FCAS railways",,194,Northern Chile
+"auto-79","Empalme Puerto ANTOFAGASTA",internacional,,1.000 mm,0,,,,"",50,Coastal Chile
+"auto-80","Empalme al Norte",troncal-norte,,1.000 mm,0,,,,"",255,Northern Chile
+"auto-81","FCAB y FCAS",internacional,,1.000 mm,0,,,"Duplicate entry - review or DELETE",,194,Northern Chile
+"auto-82","Ramal PAMPA - PRAT",minero,,1.000 mm,0,,,,"",124,Northern Chile
+"auto-83","Ramal PUERTO ANGAMOS",minero,,1.000 mm,0,,,,"",14,Coastal Chile
+"auto-84","Seccion Cambio de Direccion",troncal-norte,,1.000 mm,0,,,,"",57,Northern Chile
+"auto-85","Empalme TOCO (Red Norte)",troncal-norte,,1.000 mm,0,,,,"",103,Northern Chile
+"auto-86","Seccion BARRILES-PEDRO DE VALDIVIA",troncal-norte,,1.000 mm,0,,,,"",502,Northern Chile
+"auto-87","Empalme Oriente",troncal-norte,,1.000 mm,0,,,,"",57,Northern Chile
+"auto-88","Ramal a Zapiga",ramal,,1.676 mm,0,,,,"",26,Northern Chile
+"auto-89","Ramal a Zapiga",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,26,Northern Chile
+"auto-90","Bajada Alternativa a Iquique",troncal-norte,,1.000 mm,0,,,,"",20,Northern Chile
+"auto-91","Ferrocarril Azufrera Tacora",minero,,1.435 mm,0,,,,"",7,Northern Chile
+"auto-92","Bajada a Aguas Calientes",internacional,,1.435 mm,0,,,,"",2,Northern Chile
