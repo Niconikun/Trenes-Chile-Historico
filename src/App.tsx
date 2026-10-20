@@ -220,9 +220,9 @@ export default function App() {
   const polyline = (coords) => coords.map(project).map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-800 font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
       {/* Encabezado */}
-      <header className="bg-slate-900 text-white px-6 py-4 flex flex-wrap items-center gap-4 sticky top-0 z-20 shadow-lg">
+      <header className="header-main">
         <div className="flex items-center gap-3">
           <span className="text-3xl">🚆</span>
           <div>
@@ -233,7 +233,7 @@ export default function App() {
         <div className="ml-auto flex items-center gap-2">
           <button
             onClick={() => { if (year >= YEAR_MAX) setYear(YEAR_MIN); setPlaying((p) => !p); }}
-            className="bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold px-4 py-2 rounded-lg text-sm transition"
+            className="btn-primary text-sm"
           >
             {playing ? "⏸ Pausar" : "▶ Animar historia"}
           </button>
@@ -241,24 +241,23 @@ export default function App() {
       </header>
 
       {/* Controles temporales */}
-      <div className="bg-white border-b shadow-sm px-6 py-4 sticky top-[64px] z-10">
+      <div className="control-panel">
         <div className="flex items-center gap-4">
-          <div className="text-2xl font-bold tabular-nums w-20 text-right text-slate-900">{year}</div>
+          <div className="text-2xl font-bold font-tech w-20 text-right text-slate-900">{year}</div>
           <input
             type="range"
             min={YEAR_MIN}
             max={YEAR_MAX}
             value={year}
             onChange={(e) => { setPlaying(false); setYear(Number(e.target.value)); }}
-            className="w-full accent-amber-600 cursor-pointer"
-            style={{ height: 6 }}
+            className="slider-timeline"
           />
         </div>
         {/* Etiquetas hito */}
         <div className="relative h-4 mt-1 hidden md:block">
           {milestones.map(([y, label]) => (
-            <div key={y} className="absolute -translate-x-1/2 text-[10px] text-slate-500" style={{ left: `${((y - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * 100}%` }}>
-              <span className={year === y ? "font-bold text-amber-700" : ""}>{y}</span>
+            <div key={y} className={`milestone-label ${year === y ? "active" : ""}`} style={{ left: `${((y - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * 100}%` }}>
+              <span className="font-tech">{y}</span>
             </div>
           ))}
         </div>
@@ -267,34 +266,34 @@ export default function App() {
             <button
               key={c}
               onClick={() => toggleCat(c)}
-              className={`px-3 py-1 rounded-full text-xs font-medium border transition ${activeCats.includes(c) ? "text-white border-transparent" : "bg-white text-slate-500 border-slate-300"}`}
+              className={`btn-category ${activeCats.includes(c) ? "btn-category-active" : "btn-category-inactive"}`}
               style={activeCats.includes(c) ? { backgroundColor: v.color } : {}}
             >
               <span className="inline-block w-2 h-2 rounded-full mr-1" style={{ backgroundColor: activeCats.includes(c) ? "white" : v.color }} />
               {v.label}
             </button>
           ))}
-          <label className="flex items-center gap-1.5 text-xs text-slate-600 ml-2 cursor-pointer">
-            <input type="checkbox" checked={showGhost} onChange={(e) => setShowGhost(e.target.checked)} className="accent-slate-500" />
+          <label className="flex items-center gap-1.5 text-xs text-slate-600 ml-2 cursor-pointer transition-colors hover:text-slate-800">
+            <input type="checkbox" checked={showGhost} onChange={(e) => setShowGhost(e.target.checked)} className="accent-amber-600" />
             Mostrar vías ya cerradas (fantasma)
           </label>
-          <label className="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer">
-            <input type="checkbox" checked={showStations} onChange={(e) => setShowStationsState(e.target.checked)} className="accent-slate-500" />
+          <label className="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer transition-colors hover:text-slate-800">
+            <input type="checkbox" checked={showStations} onChange={(e) => setShowStationsState(e.target.checked)} className="accent-amber-600" />
             Mostrar estaciones
           </label>
-          <div className="ml-auto text-sm text-slate-700">
-            <span className="font-semibold tabular-nums">{activeCount}</span> líneas ·{" "}
-            <span className="font-semibold tabular-nums">{activeKm.toLocaleString("es-CL")}</span> km de red en {year}
+          <div className="ml-auto text-sm text-slate-700 font-tech">
+            <span className="font-semibold">{activeCount}</span> líneas ·{" "}
+            <span className="font-semibold">{activeKm.toLocaleString("es-CL")}</span> km de red en {year}
           </div>
         </div>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-4 p-4 lg:p-6 max-w-[1400px] mx-auto">
         {/* Mapa */}
-        <div className="flex-1 bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="flex-1 card overflow-hidden">
           <div 
             ref={svgContainerRef}
-            className="max-h-[75vh] overflow-auto relative"
+            className="map-container"
           >
             <svg 
               ref={mapRef} 
@@ -313,7 +312,7 @@ export default function App() {
                 </filter>
               </defs>
               <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
-                <rect x={-10} y={-10} width={420} height={1100} fill="#eef6fb" />
+                <rect x={-10} y={-10} width={420} height={1100} fill="#f8fafc" />
               {/* Contorno de Chile - multiple polygons for mainland and all islands */}
               {CHILE_OUTLINE.map((polygon: Coordinate[], idx: number) => {
                 const polygonPath = polygon.map(project).map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
@@ -321,8 +320,8 @@ export default function App() {
                   <polygon
                     key={`chile-polygon-${idx}`}
                     points={polygonPath}
-                    fill="#f5f0e6"
-                    stroke="#9ca3af"
+                    fill="#f1f5f9"
+                    stroke="#94a3b8"
                     strokeWidth={1.2 / zoom}
                   />
                 );
@@ -425,14 +424,14 @@ export default function App() {
             {zoom !== 1 && (
               <button
                 onClick={resetView}
-                className="absolute bottom-4 right-4 bg-white shadow-lg rounded-full p-2 hover:bg-slate-50 transition z-10"
+                className="absolute bottom-4 right-4 bg-white shadow-lg rounded-full p-2 hover:bg-slate-50 transition-smooth z-10"
                 style={{ transform: 'translate(-50%, -50%)' }}
               >
                 <span className="text-lg">🔍</span>
               </button>
             )}
           </div>
-          <p className="text-[11px] text-slate-400 px-4 py-2 border-t">
+          <p className="text-[11px] text-slate-500 px-4 py-2 border-t border-slate-200">
             Mapa estilizado: trazados y contornos aproximados. Pulsa una línea para ver su ficha. 
             <strong>Rueda del mouse para hacer zoom, arrastrar para mover el mapa.</strong>
           </p>
@@ -444,21 +443,21 @@ export default function App() {
             const l = RAIL_DB.find((r) => r.id === selected);
             const st = lineState(l);
             return (
-              <div className="bg-white rounded-xl shadow-md p-5 border-t-4" style={{ borderTopColor: CATS[l.cat].color }}>
+              <div className="card border-t-4" style={{ borderTopColor: CATS[l.cat].color }}>
                 <div className="flex items-start justify-between gap-2">
-                  <h2 className="font-bold text-slate-900 leading-snug">{l.name}</h2>
-                  <button onClick={() => setSelected(null)} className="text-slate-400 hover:text-slate-700 text-lg leading-none">✕</button>
+                  <h2 className="font-serif font-bold text-slate-900 leading-snug">{l.name}</h2>
+                  <button onClick={() => setSelected(null)} className="text-slate-400 hover:text-slate-700 text-lg leading-none transition-colors">✕</button>
                 </div>
                 <div className="flex gap-2 mt-2 flex-wrap">
-                  <span className="text-xs px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: CATS[l.cat].color }}>{CATS[l.cat].label}</span>
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${st === "active" ? "bg-emerald-100 text-emerald-800" : "bg-slate-200 text-slate-600"}`}>
+                  <span className="badge text-white" style={{ backgroundColor: CATS[l.cat].color }}>{CATS[l.cat].label}</span>
+                  <span className={`badge ${st === "active" ? "badge-success" : "badge"}`}>
                     {st === "active" ? `En servicio en ${year}` : st === "future" ? `Aún no construida en ${year}` : `Cerrada en ${year}`}
                   </span>
                 </div>
                 <dl className="mt-4 text-sm divide-y divide-slate-100">
-                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Inauguración</dt><dd className="font-medium">{l.opened}</dd></div>
-                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Cierre</dt><dd className="font-medium">{l.closed === null ? "— (activa)" : l.closed}</dd></div>
-                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Longitud</dt><dd className="font-medium">{l.km} km</dd></div>
+                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Inauguración</dt><dd className="font-medium font-tech">{l.opened}</dd></div>
+                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Cierre</dt><dd className="font-medium font-tech">{l.closed === null ? "— (activa)" : l.closed}</dd></div>
+                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Longitud</dt><dd className="font-medium font-tech">{l.km} km</dd></div>
                   <div className="flex justify-between py-1.5"><dt className="text-slate-500">Trocha</dt><dd className="font-medium text-right">{l.gauge}</dd></div>
                   <div className="flex justify-between py-1.5"><dt className="text-slate-500">Operador</dt><dd className="font-medium text-right">{l.op}</dd></div>
                 </dl>
@@ -466,8 +465,8 @@ export default function App() {
               </div>
             );
           })() : (
-            <div className="bg-white rounded-xl shadow-md p-5">
-              <h2 className="font-bold text-slate-900 mb-2">Cómo usar el mapa</h2>
+            <div className="card">
+              <h2 className="font-serif font-bold text-slate-900 mb-2">Cómo usar el mapa</h2>
               <ul className="text-sm text-slate-600 space-y-1.5 list-disc list-inside">
                 <li>Mueve el <b>slider de años</b> (1850–2026) o pulsa <b>Animar historia</b> para ver la red crecer y decaer.</li>
                 <li>Las líneas <b>punteadas grises</b> son vías ya cerradas en el año mostrado.</li>
@@ -480,10 +479,10 @@ export default function App() {
           )}
 
           {/* Base de datos */}
-          <div className="bg-white rounded-xl shadow-md p-5">
-            <h2 className="font-bold text-slate-900 mb-3 text-sm">Base de datos · {RAIL_DB.length} vías registradas</h2>
+          <div className="card">
+            <h2 className="font-serif font-bold text-slate-900 mb-3 text-sm">Base de datos · {RAIL_DB.length} vías registradas</h2>
             <div className="max-h-64 overflow-auto pr-1">
-              <table className="w-full text-xs">
+              <table className="table-compact">
                 <thead className="text-slate-500 sticky top-0 bg-white">
                   <tr className="text-left">
                     <th className="py-1">Vía</th><th>Apertura</th><th>Cierre</th>
@@ -497,8 +496,8 @@ export default function App() {
                         <span className="inline-block w-2 h-2 rounded-full mr-1.5 align-middle" style={{ backgroundColor: CATS[l.cat].color }} />
                         {l.name}
                       </td>
-                      <td className="tabular-nums">{l.opened}</td>
-                      <td className="tabular-nums">{l.closed ?? "activa"}</td>
+                      <td className="font-tech">{l.opened}</td>
+                      <td className="font-tech">{l.closed ?? "activa"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -507,8 +506,8 @@ export default function App() {
           </div>
 
           {/* Contexto histórico */}
-          <div className="bg-slate-900 text-slate-300 rounded-xl p-5 text-xs leading-relaxed">
-            <h2 className="font-bold text-white mb-2 text-sm">Contexto</h2>
+          <div className="bg-slate-900 text-slate-300 rounded-xl p-5 text-xs leading-relaxed card">
+            <h2 className="font-serif font-bold text-white mb-2 text-sm">Contexto</h2>
             <p>La red chilena nació con el Caldera–Copiapó (1851) y creció primero en el norte minero. En 1913 quedó unida la red troncal de Iquique a Puerto Montt, superando los <b className="text-white">7.000 km</b> con sus ramales. La crisis del salitre, el terremoto de 1960, la pérdida de subsidios (1979) y la competencia caminera redujeron la red: el Longitudinal Norte cerró pasajeros en 1975 y más de veinte ramales fueron levantados. Hoy la red troncal sur y servicios metropolitanos (Metrotren, Biotrén, Terrasur) conviven con proyectos de reactivación.</p>
           </div>
         </aside>
