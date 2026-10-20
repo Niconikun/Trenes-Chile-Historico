@@ -5,9 +5,6 @@ import chileGeoJson from './chile-outline.json';
 // Type for coordinate pairs [longitude, latitude]
 export type Coordinate = [number, number];
 
-// Re-export railway data
-export { getRailways, RAILWAYS, type Railway } from './railways';
-
 /**
  * Extracts the outline coordinates of Chile from the GeoJSON file.
  * The GeoJSON contains a MultiPolygon with mainland and all islands.
