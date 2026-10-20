@@ -114,8 +114,23 @@ export default function App() {
   const [isPanning, setIsPanning] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [showStations, setShowStationsState] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const mapRef = useRef<SVGSVGElement | null>(null);
   const svgContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // Dark mode effect
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, [darkMode]);
+
+  // Toggle dark mode
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
 
   useEffect(() => {
     if (!playing) return;
@@ -210,6 +225,40 @@ export default function App() {
   const toggleCat = (c) =>
     setActiveCats((a) => (a.includes(c) ? a.filter((x) => x !== c) : [...a, c]));
 
+  // Calculate yearly km changes
+  const yearlyKmChanges = useMemo(() => {
+    const changes: Record<number, { added: number; removed: number }> = {};
+    
+    // Initialize all years
+    for (let y = YEAR_MIN; y <= YEAR_MAX; y++) {
+      changes[y] = { added: 0, removed: 0 };
+    }
+    
+    // Calculate changes
+    RAIL_DB.forEach((line) => {
+      if (line.opened && line.opened >= YEAR_MIN && line.opened <= YEAR_MAX) {
+        changes[line.opened].added += line.km;
+      }
+      if (line.closed && line.closed >= YEAR_MIN && line.closed <= YEAR_MAX) {
+        changes[line.closed].removed += line.km;
+      }
+    });
+    
+    return changes;
+  }, [RAIL_DB]);
+
+  // Get max value for scaling the graph
+  const maxKmChange = useMemo(() => {
+    let max = 0;
+    for (let y = YEAR_MIN; y <= YEAR_MAX; y++) {
+      const change = yearlyKmChanges[y];
+      if (change) {
+        max = Math.max(max, change.added, change.removed);
+      }
+    }
+    return max;
+  }, [yearlyKmChanges]);
+
   // años hito bajo el slider
   const milestones = [
     [1851, "Caldera–Copiapó"], [1863, "Valparaíso–Santiago"], [1884, "Nace EFE"],
@@ -220,17 +269,24 @@ export default function App() {
   const polyline = (coords) => coords.map(project).map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans transition-colors duration-300">
       {/* Encabezado */}
       <header className="header-main">
         <div className="flex items-center gap-3">
           <span className="text-3xl">🚆</span>
           <div>
             <h1 className="text-lg font-bold leading-tight">Mapa Ferroviario Histórico de Chile</h1>
-            <p className="text-xs text-slate-400">Vías férreas construidas entre 1851 y hoy · fechas aproximadas</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">Vías férreas construidas entre 1851 y hoy · fechas aproximadas</p>
           </div>
         </div>
         <div className="ml-auto flex items-center gap-2">
+          <button
+            onClick={toggleDarkMode}
+            className="theme-toggle"
+            title="Alternar modo oscuro"
+          >
+            <span className="theme-toggle-icon">{darkMode ? "🌙" : "☀️"}</span>
+          </button>
           <button
             onClick={() => { if (year >= YEAR_MAX) setYear(YEAR_MIN); setPlaying((p) => !p); }}
             className="btn-primary text-sm"
@@ -243,7 +299,7 @@ export default function App() {
       {/* Controles temporales */}
       <div className="control-panel">
         <div className="flex items-center gap-4">
-          <div className="text-2xl font-bold font-tech w-20 text-right text-slate-900">{year}</div>
+          <div className="text-2xl font-bold font-tech w-20 text-right text-[var(--text-primary)]">{year}</div>
           <input
             type="range"
             min={YEAR_MIN}
@@ -273,18 +329,75 @@ export default function App() {
               {v.label}
             </button>
           ))}
-          <label className="flex items-center gap-1.5 text-xs text-slate-600 ml-2 cursor-pointer transition-colors hover:text-slate-800">
+          <label className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] ml-2 cursor-pointer transition-colors hover:text-[var(--text-primary)]">
             <input type="checkbox" checked={showGhost} onChange={(e) => setShowGhost(e.target.checked)} className="accent-amber-600" />
             Mostrar vías ya cerradas (fantasma)
           </label>
-          <label className="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer transition-colors hover:text-slate-800">
+          <label className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] cursor-pointer transition-colors hover:text-[var(--text-primary)]">
             <input type="checkbox" checked={showStations} onChange={(e) => setShowStationsState(e.target.checked)} className="accent-amber-600" />
             Mostrar estaciones
           </label>
-          <div className="ml-auto text-sm text-slate-700 font-tech">
-            <span className="font-semibold">{activeCount}</span> líneas ·{" "}
-            <span className="font-semibold">{activeKm.toLocaleString("es-CL")}</span> km de red en {year}
+          <div className="ml-auto text-sm text-[var(--text-secondary)] font-tech">
+            <span className="font-semibold text-[var(--text-primary)]">{activeCount}</span> líneas ·{" "}
+            <span className="font-semibold text-[var(--text-primary)]">{activeKm.toLocaleString("es-CL")}</span> km de red en {year}
           </div>
+        </div>
+      </div>
+
+      {/* Gráfico de cambios anuales de km */}
+      <div className="graph-container mx-4 lg:mx-6 mb-4">
+        <h3 className="font-semibold text-[var(--text-primary)] mb-3">
+          Cambios anuales en kilómetros de red ferroviaria
+        </h3>
+        <div className="flex gap-4 items-end h-40 relative">
+          {/* Bar chart showing km added (green) and removed (red) */}
+          {Array.from({ length: YEAR_MAX - YEAR_MIN + 1 }, (_, i) => {
+            const y = YEAR_MIN + i;
+            const change = yearlyKmChanges[y] || { added: 0, removed: 0 };
+            const barHeight = maxKmChange > 0 ? (change.added / maxKmChange) * 100 : 0;
+            const barHeightRemoved = maxKmChange > 0 ? (change.removed / maxKmChange) * 100 : 0;
+            
+            // Only show bars for years with changes or every 10 years
+            if (change.added === 0 && change.removed === 0 && y % 10 !== 0) {
+              return null;
+            }
+            
+            return (
+              <div key={y} className="flex-1 flex flex-col items-center gap-1" style={{ height: '100%' }}>
+                {/* Removed km (red bar) */}
+                {change.removed > 0 && (
+                  <div 
+                    className="graph-bar-negative w-full"
+                    style={{ height: `${barHeightRemoved}%` }}
+                    title={`-${change.removed} km en ${y}`}
+                  />
+                )}
+                {/* Added km (green bar) */}
+                {change.added > 0 && (
+                  <div 
+                    className="graph-bar-positive w-full"
+                    style={{ height: `${barHeight}%` }}
+                    title={`+${change.added} km en ${y}`}
+                  />
+                )}
+                {/* Year label */}
+                <span className="text-[10px] text-[var(--text-muted)] w-full text-center truncate">
+                  {y}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+        <div className="flex items-center gap-4 mt-3 text-xs text-[var(--text-muted)]">
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-emerald-500" />
+            <span>km añadidos</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded-sm bg-red-500" />
+            <span>km removidos</span>
+          </div>
+          <span className="ml-auto">Escala: {maxKmChange.toLocaleString('es-CL')} km máx.</span>
         </div>
       </div>
 
@@ -312,7 +425,7 @@ export default function App() {
                 </filter>
               </defs>
               <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
-                <rect x={-10} y={-10} width={420} height={1100} fill="#f8fafc" />
+                <rect x={-10} y={-10} width={420} height={1100} fill="var(--map-bg)" />
               {/* Contorno de Chile - multiple polygons for mainland and all islands */}
               {CHILE_OUTLINE.map((polygon: Coordinate[], idx: number) => {
                 const polygonPath = polygon.map(project).map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
@@ -320,15 +433,15 @@ export default function App() {
                   <polygon
                     key={`chile-polygon-${idx}`}
                     points={polygonPath}
-                    fill="#f1f5f9"
-                    stroke="#94a3b8"
+                    fill="var(--map-chile-fill)"
+                    stroke="var(--map-chile-stroke)"
                     strokeWidth={1.2 / zoom}
                   />
                 );
               })}
               {/* Líneas cerradas (fantasmas) */}
               {showGhost && visible.filter((l) => lineState(l) === "closed").map((l) => (
-                <polyline key={"g" + l.id} points={polyline(l.coords)} fill="none" stroke="#94a3b8"
+                <polyline key={"g" + l.id} points={polyline(l.coords)} fill="none" stroke="var(--text-muted)"
                   strokeWidth={1.5 / zoom} strokeDasharray="4 4" opacity={0.6} />
               ))}
               {/* Líneas activas */}
@@ -373,7 +486,7 @@ export default function App() {
                         cx={x} 
                         cy={y} 
                         r={isActive ? 3.5 / zoom : 2.5 / zoom}
-                        fill={isActive ? CATS[l.cat as keyof typeof CATS].color : "#94a3b8"}
+                        fill={isActive ? CATS[l.cat as keyof typeof CATS].color : "var(--text-muted)"}
                         stroke="white" 
                         strokeWidth={0.5 / zoom}
                         filter={isActive ? "url(#shadow)" : "none"}
@@ -383,7 +496,7 @@ export default function App() {
                           x={x + 4} 
                           y={y - 2} 
                           fontSize={8 / zoom}
-                          fill="#475569"
+                          fill="var(--text-secondary)"
                           fontWeight="bold"
                         >{name}</text>
                       )}
@@ -397,9 +510,9 @@ export default function App() {
                 const [x, y] = project([lon as number, lat as number]);
                 return (
                   <g key={name}>
-                    <circle cx={x} cy={y} r={2.6 / zoom} fill="#334155" />
+                    <circle cx={x} cy={y} r={2.6 / zoom} fill="var(--text-primary)" />
                     {zoom > 1.2 && (
-                      <text x={x + 5} y={y + 2.5} fontSize={9 / zoom} fill="#475569">{name}</text>
+                      <text x={x + 5} y={y + 2.5} fontSize={9 / zoom} fill="var(--text-secondary)">{name}</text>
                     )}
                   </g>
                 );
@@ -412,9 +525,9 @@ export default function App() {
                 const [x, y] = project(l.coords[Math.floor(l.coords.length / 2)]);
                 return (
                   <g>
-                    <rect x={x + 8} y={y - 30} width={Math.min(230, 24 + l.name.length * 5.6)} height={34} rx={5} fill="#0f172a" opacity={0.92} />
-                    <text x={x + 16} y={y - 17} fontSize={10 / zoom} fill="#fff" fontWeight="bold">{l.name}</text>
-                    <text x={x + 16} y={y - 6} fontSize={9 / zoom} fill="#cbd5e1">{fmt(l.opened)} – {fmt(l.closed)} · {l.km} km</text>
+                    <rect x={x + 8} y={y - 30} width={Math.min(230, 24 + l.name.length * 5.6)} height={34} rx={5} fill="var(--bg-secondary)" opacity={0.95} />
+                    <text x={x + 16} y={y - 17} fontSize={10 / zoom} fill="var(--text-primary)" fontWeight="bold">{l.name}</text>
+                    <text x={x + 16} y={y - 6} fontSize={9 / zoom} fill="var(--text-secondary)">{fmt(l.opened)} – {fmt(l.closed)} · {l.km} km</text>
                   </g>
                 );
               })()}
@@ -424,14 +537,14 @@ export default function App() {
             {zoom !== 1 && (
               <button
                 onClick={resetView}
-                className="absolute bottom-4 right-4 bg-white shadow-lg rounded-full p-2 hover:bg-slate-50 transition-smooth z-10"
+                className="absolute bottom-4 right-4 bg-white dark:bg-slate-800 shadow-lg rounded-full p-2 hover:bg-slate-50 dark:hover:bg-slate-700 transition-smooth z-10"
                 style={{ transform: 'translate(-50%, -50%)' }}
               >
-                <span className="text-lg">🔍</span>
+                <span className="text-lg text-slate-800 dark:text-slate-200">🔍</span>
               </button>
             )}
           </div>
-          <p className="text-[11px] text-slate-500 px-4 py-2 border-t border-slate-200">
+          <p className="text-[11px] text-[var(--text-muted)] px-4 py-2 border-t border-[var(--border-light)]">
             Mapa estilizado: trazados y contornos aproximados. Pulsa una línea para ver su ficha. 
             <strong>Rueda del mouse para hacer zoom, arrastrar para mover el mapa.</strong>
           </p>
