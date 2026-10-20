@@ -147,7 +147,7 @@ export default function App() {
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    const newZoom = Math.max(0.5, Math.min(zoom * delta, 10));
+    const newZoom = Math.max(0.1, Math.min(zoom * delta, 50));
     
     // Zoom towards mouse position
     const svg = mapRef.current;
@@ -442,7 +442,7 @@ export default function App() {
               {/* Líneas cerradas (fantasmas) */}
               {showGhost && visible.filter((l) => lineState(l) === "closed").map((l) => (
                 <polyline key={"g" + l.id} points={polyline(l.coords)} fill="none" stroke="var(--text-muted)"
-                  strokeWidth={1.5 / zoom} strokeDasharray="4 4" opacity={0.6} />
+                  strokeWidth={1.0 / zoom} strokeDasharray="4 4" opacity={0.6} />
               ))}
               {/* Líneas activas */}
               {visible.filter((l) => lineState(l) === "active").map((l) => (
@@ -451,7 +451,7 @@ export default function App() {
                     points={polyline(l.coords)}
                     fill="none"
                     stroke={CATS[l.cat as keyof typeof CATS].color}
-                    strokeWidth={(hovered === l.id || selected === l.id ? 6 : 3.5) / zoom}
+                    strokeWidth={(hovered === l.id || selected === l.id ? 4 : 2.5) / zoom}
                     strokeLinecap="round"
                     className="cursor-pointer transition-all"
                     opacity={0.95}
@@ -464,7 +464,7 @@ export default function App() {
                     points={polyline(l.coords)}
                     fill="none"
                     stroke="transparent"
-                    strokeWidth={12 / zoom}
+                    strokeWidth={8 / zoom}
                     className="cursor-pointer"
                     onMouseEnter={() => setHovered(l.id)}
                     onMouseLeave={() => setHovered(null)}
