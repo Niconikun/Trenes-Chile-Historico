@@ -2,7 +2,7 @@
 /// <reference types="react-dom" />
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { getChileOutlineWithFallback, getRailways, type Coordinate, type Railway } from "./data";
+import { getChileOutlineWithFallback, getRailways, type Coordinate, type Railway, type AbandonedStatus } from "./data";
 
 // ============================================================
 // BASE DE DATOS: vías férreas históricas de Chile
@@ -58,6 +58,16 @@ const CATS = {
   internacional: { label: "Internacionales", color: "#7c3aed" },
 };
 
+// Estados de abandono
+const ABANDONED_STATUSES: Record<string, { label: string; color: string; icon: string }> = {
+  "active": { label: "En servicio", color: "#10b981", icon: "🟢" },
+  "intact": { label: "Intactas (sin servicio)", color: "#f59e0b", icon: "🟡" },
+  "lifted": { label: "Vías levantadas", color: "#ef4444", icon: "🔴" },
+  "converted": { label: "Convertidas", color: "#8b5cf6", icon: "🟣" },
+  "partial": { label: "Parcialmente levantadas", color: "#f97316", icon: "🟠" },
+  "unknown": { label: "Estado desconocido", color: "#9ca3af", icon: "⚪" },
+};
+
 // Contorno de Chile desde GeoJSON (preciso) - array de poligonos (continente + islas)
 const CHILE_OUTLINE: Coordinate[][] = getChileOutlineWithFallback();
 
@@ -95,8 +105,9 @@ const CITIES = [
 
 
 // Proyección equirectangular estilizada - rotada 90 grados para vista horizontal
+// con este arriba y oeste abajo
 const PX = 26, PY = 26, PADX = 30, PADY = 30;
-const project = ([lon, lat]) => [PADX + (-lat - 17.3) * PY, PADY + (lon + 77.5) * PX * 0.92];
+const project = ([lon, lat]) => [PADX + (-lat - 17.3) * PY, PADY + (-67 - lon) * PX * 0.92];
 
 const YEAR_MIN = 1850, YEAR_MAX = 2026;
 
@@ -113,6 +124,7 @@ export default function App() {
   const [playing, setPlaying] = useState(false);
   const [activeCats, setActiveCats] = useState(Object.keys(CATS));
   const [showGhost, setShowGhost] = useState(true);
+  const [activeAbandonedStatuses, setActiveAbandonedStatuses] = useState<Set<string>>(new Set(['active', 'lifted', 'intact', 'converted', 'partial', 'unknown']));
   const [selected, setSelected] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
@@ -221,7 +233,7 @@ export default function App() {
       : l.opened > year ? "future"
       : "closed";
 
-  const visible = useMemo(() => RAIL_DB.filter((l) => activeCats.includes(l.cat)), [activeCats]);
+  const visible = useMemo(() => RAIL_DB.filter((l) => activeCats.includes(l.cat) && activeAbandonedStatuses.has(l.abandoned_status || 'unknown')), [activeCats, activeAbandonedStatuses]);
   const activeKm = useMemo(
     () => visible.filter((l) => lineState(l) === "active").reduce((s, l) => s + l.km, 0),
     [visible, year]
@@ -230,6 +242,17 @@ export default function App() {
 
   const toggleCat = (c) =>
     setActiveCats((a) => (a.includes(c) ? a.filter((x) => x !== c) : [...a, c]));
+  
+  const toggleAbandonedStatus = (status: string) =>
+    setActiveAbandonedStatuses((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(status)) {
+        newSet.delete(status);
+      } else {
+        newSet.add(status);
+      }
+      return newSet;
+    });
 
   // Calculate yearly km changes
   const yearlyKmChanges = useMemo(() => {
@@ -333,6 +356,19 @@ export default function App() {
             >
               <span className="inline-block w-2 h-2 rounded-full mr-1" style={{ backgroundColor: activeCats.includes(c) ? "white" : v.color }} />
               {v.label}
+            </button>
+          ))}
+          {" · "}
+          {Object.entries(ABANDONED_STATUSES).map(([status, info]) => (
+            <button
+              key={status}
+              onClick={() => toggleAbandonedStatus(status)}
+              className={`btn-category ${activeAbandonedStatuses.has(status) ? "btn-category-active" : "btn-category-inactive"}`}
+              style={activeAbandonedStatuses.has(status) ? { backgroundColor: info.color } : {}}
+              title={info.label}
+            >
+              <span className="mr-1">{info.icon}</span>
+              {info.label.split('(')[0].trim()}
             </button>
           ))}
           <label className="flex items-center gap-1.5 text-xs text-[var(--text-secondary)] ml-2 cursor-pointer transition-colors hover:text-[var(--text-primary)]">
@@ -544,8 +580,9 @@ export default function App() {
                   l.name,
                   `${fmtYear(l.opened)} – ${fmtYear(l.closed)}`,
                   l.op,
-                  `${l.km} km · ${l.gauge}`
-                ].filter(line => line && line !== '—');
+                  `${l.km} km · ${l.gauge}`,
+                  l.abandoned_status && l.abandoned_status !== 'active' ? `Estado: ${l.status_label || l.abandoned_status}` : null
+                ].filter(line => line && line !== '—' && line !== 'null');
                 
                 const tooltipHeight = 18 + lines.length * 12;
                 
@@ -556,6 +593,9 @@ export default function App() {
                     <text x={x + 16} y={y - tooltipHeight + 24} fontSize={9 / zoom} fill="var(--text-secondary)">{fmtYear(l.opened)} – {fmtYear(l.closed)}</text>
                     {l.op && <text x={x + 16} y={y - tooltipHeight + 36} fontSize={8 / zoom} fill="var(--text-secondary)">Operador: {l.op}</text>}
                     <text x={x + 16} y={y - tooltipHeight + 48} fontSize={8 / zoom} fill="var(--text-secondary)">{l.km} km · {l.gauge}</text>
+                    {l.abandoned_status && l.abandoned_status !== 'active' && (
+                      <text x={x + 16} y={y - tooltipHeight + 60} fontSize={8 / zoom} fill="var(--text-secondary)">Estado: {l.status_label || l.abandoned_status}</text>
+                    )}
                   </g>
                 );
               })()}
@@ -601,6 +641,12 @@ export default function App() {
                   <div className="flex justify-between py-1.5"><dt className="text-slate-500">Longitud</dt><dd className="font-medium font-tech">{l.km} km</dd></div>
                   <div className="flex justify-between py-1.5"><dt className="text-slate-500">Trocha</dt><dd className="font-medium text-right">{l.gauge}</dd></div>
                   <div className="flex justify-between py-1.5"><dt className="text-slate-500">Operador</dt><dd className="font-medium text-right">{l.op || "—"}</dd></div>
+                  {l.abandoned_status && l.abandoned_status !== 'active' && (
+                    <div className="flex justify-between py-1.5">
+                      <dt className="text-slate-500">Estado</dt>
+                      <dd className="font-medium text-right">{l.status_label || l.abandoned_status}</dd>
+                    </div>
+                  )}
                   {l.notes && <div className="flex justify-between py-1.5"><dt className="text-slate-500">Notas</dt><dd className="font-medium text-right text-sm">{l.notes}</dd></div>}
                   {l.region_guess && <div className="flex justify-between py-1.5"><dt className="text-slate-500">Región</dt><dd className="font-medium text-right text-sm">{l.region_guess}</dd></div>}
                   {l.source && <div className="flex justify-between py-1.5"><dt className="text-slate-500">Fuente</dt><dd className="font-medium text-right text-xs">{l.source}</dd></div>}

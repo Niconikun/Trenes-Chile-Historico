@@ -6,6 +6,8 @@ import railwaysCombined from './railways-combined.json';
 // Type for coordinate pairs [longitude, latitude]
 export type Coordinate = [number, number];
 
+export type AbandonedStatus = 'active' | 'lifted' | 'intact' | 'converted' | 'partial' | 'unknown';
+
 export interface Railway {
   id: string;
   name: string;
@@ -21,6 +23,8 @@ export interface Railway {
   region_guess?: string;
   source?: string;
   coords: Coordinate[];
+  abandoned_status?: AbandonedStatus;
+  status_label?: string;
 }
 
 // Process all railway entries
@@ -42,7 +46,9 @@ function processRailwayData(): Railway[] {
       coords_count: entry.coords_count || entry.coords.length || 0,
       region_guess: entry.region_guess || '',
       source: entry.source || '',
-      coords: entry.coords.map((c: number[]) => [c[0], c[1]] as Coordinate)
+      coords: entry.coords.map((c: number[]) => [c[0], c[1]] as Coordinate),
+      abandoned_status: entry.abandoned_status || 'unknown',
+      status_label: entry.status_label || ''
     });
   }
   
