@@ -1,0 +1,94 @@
+id,name,cat,op,gauge,km,opened,closed,desc,notes,coords_count,region_guess,source
+"auto-0","Empalme Mapocho - Norte",ramal,EFE,1.676 mm,0,1874,,"Empalme Ramal Yungay - Mapocho. Levantado en casi toda su extension","",44,Santiago,"Estación Mapocho: Wikipedia"
+"auto-1","Empalme Yungay-Sur",ramal,EFE,1.676 mm,0,1870s,,"Via ferrea que servia de empalme de Mapocho hacia el sur. Parte del sistema de conexión de Santiago a Valparaíso","",11,Santiago,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-2","Pista de Emergencia",ramal,EFE,1.676 mm,0,1891,1987,"Estacion Enrique Meiggs, Pista de Emergencia, para los trenes que no pudieran frenar a tiempo.","Parte de estación Talagante construida en 1891, desuso en 1987",28,Santiago,"Ramal Paine-Talagante: Wikipedia"
+"auto-3","Ramal LLAYLLAY - LOS ANDES",ramal,EFE,1.676 mm,219,1874,1994,"Ramal que conectaba Llay-Llay con Los Andes, permitiendo conexión con el Ferrocarril Trasandino a Mendoza","Estación Los Andes inaugurada 12 feb 1874, cerró en 1994",219,Central Chile,"Estación Los Andes: Wikipedia"
+"auto-4","Tunel Las Cuevas",troncal-sur,Trasandino,1.676 mm,0,1910,,,"Túnel ferroviario del Ferrocarril Trasandino Los Andes-Mendoza",176,Andes Border,"Ferrocarril Trasandino Los Andes-Mendoza: Wikipedia"
+"auto-5","VIA SUMERGIDA EMBALSE POTRERILLOS",ramal,EFE,1.676 mm,8,1930s,,,"Vía férrea afectada por la construcción del Embalse Potrerillos",8,Central Chile,"Estación Potrerillos: Geovirtual2.cl"
+"auto-6","Via Tun. LAS CUEVAS - MENDOZA",internacional,Trasandino,1.000 mm,352,1910,1984,"Ferrocarril Trasandino Los Andes-Mendoza. Conexión internacional Chile-Argentina","Inaugurado 1910, cerrado 1984. Trocha métrica (1000 mm)",352,Andes Border,"Ferrocarril Trasandino Los Andes-Mendoza: Wikipedia"
+"auto-7","Variante a Estacion de Transferencia",ramal,EFE,1.676 mm,126,1960s,,,"Variante para conexión con estación de transferencia de carga",126,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-8","Variante Portezuelo Amarillo",ramal,EFE,1.676 mm,135,1970s,,,"Variante en la zona cordillerana cerca de Los Andes",135,Andes Border,"Ferrocarril Trasandino: Ferrocarril-Trasandino.com.ar"
+"auto-9","subramal RIO BLANCO - SALADILLO",ramal,EFE,1.676 mm,223,1920s,,,"Subramal en la zona de Los Andes, conexión a zonas mineras",223,Andes Border,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-10","Ruta sin titulo",ramal,,1.676 mm,5,,,,"Tramo corto sin identificar en zona central",5,Unknown,
+"auto-11","Ruta sin titulo",ramal,,1.676 mm,2,,,,"Tramo muy corto sin identificar",2,Unknown,
+"auto-12","Antiguo Trazado por Quillota",troncal-sur,EFE,1.676 mm,77,1890s,1980s,"Antiguo trazado alternativo del Longitudinal Sur por Quillota","",77,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-13","Sub-Ramal RITOQUE-LAS VENTANAS",ramal,EFE,1.676 mm,14,1910s,,,"Sub-ramal costero en la Región de Valparaíso",14,Coastal Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-14","Sector Paso Hondo - Via B",ramal,EFE,1.676 mm,28,1940s,,,"Sector alternativo en la zona central",28,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-15","RED TRONCAL SUR",troncal-sur,EFE,1.676 mm,1471,1870s,,,"Red principal que conecta Santiago con Puerto Montt",1471,Central/South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-16","",ramal,,1.676 mm,0,,,,"Empty name - DELETE or RENAME",,0,Unknown,
+"auto-17","Ramal PAINE a TALAGANTE",ramal,EFE,1.676 mm,25.2,1891,1987,"Ramal que conecta Paine con Talagante en la Región Metropolitana","Estación Talagante construida en 1891, ramal en desuso desde 1987. Electrificado en 1981, electrificación removida 1997-1998. Actualmente TRANSAP transporta ácido sulfúrico",245,Central Chile,"Ramal Paine-Talagante: Wikipedia"
+"auto-18","Ramal Rancagua - Coltauco",ramal,EFE,1.676 mm,71,1890s,1990s,"Ramal en la Región del Libertador General Bernardo O'Higgins","",71,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-19","Ruta Tentativa a SEWELL",ramal,EFE,1.676 mm,13,1900s,,,"Ruta de estudio para conexión a Sewell",13,Central Chile,"Ramal Rancagua-Sewell: Referencia histórica"
+"auto-20","Ramal Particular Rancagua - Sewell",ramal,Braden Copper,1.676 mm,70,1907,1978,"Ramal minero para transporte de cobre desde Sewell a Rancagua","Operado por Braden Copper Company (filial de Kennecott), cerrado en 1978",253,Central Chile,"Datos existentes en archivo original"
+"auto-21","RAMAL PELEQUEN - EL MANZANO",ramal,EFE,1.676 mm,102,1920s,,,"Ramal en la Región del Libertador General Bernardo O'Higgins",102,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-22","Ex-Estacion Palmilla",ramal,EFE,1.676 mm,4,1910s,,,"Estación en la Región del Libertador General Bernardo O'Higgins",4,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-23","ANTIGUO TRAZADO CHIMBARONGO-TENO",ramal,EFE,1.676 mm,24,1880s,1970s,"Antiguo trazado entre Chimbarongo y Teno","",24,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-24","Ex-Ramal Linares a Yerbas Buenas y Colbun",ramal,EFE,1.676 mm,36,1910s,1990s,"Ramal en la Región del Maule hacia zonas agrícolas","",36,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-25","Ramal PARRAL-CAUQUENES",ramal,EFE,1.676 mm,233,1930s,1990s,"Ramal en la Región del Maule","",233,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-26","Empalme a Celulosa Nueva Aldea",ramal,EFE,1.676 mm,22,1970s,,,"Empalme industrial a planta Celulosa Nueva Aldea","",22,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-27","Antiguo Trazado General Cruz",ramal,EFE,1.676 mm,29,1890s,1980s,"Antiguo trazado en la zona de General Cruz","",29,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-28","Ramal Monte Aguila-Polcura",ramal,EFE,1.676 mm,15,1930s,1990s,"Ramal en la Región de la Araucanía","",15,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-29","Estacion El Arenal",ramal,EFE,1.676 mm,2,1910s,,,"Pequeña estación en zona no identificada",2,Unknown,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-30","Ruta sin titulo",ramal,,1.676 mm,11,,,,"Tramo sin identificar",11,Unknown,
+"auto-31","Ramal Coigue-Nacimiento",ramal,EFE,1.676 mm,162,1920s,1990s,"Ramal en la Región de la Araucanía hacia Nacimiento","",162,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-32","Ramal Renaico-Traiguen",ramal,EFE,1.676 mm,164,1920s,1983,"Ramal en la Región de la Araucanía. Traiguén fue punta de rieles","Servicio de pasajeros cesó el 6 de marzo de 1983",164,South Chile,"Estación Traiguén: Wikipedia"
+"auto-33","Ramal Renaico-Traiguen",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,164,South Chile,
+"auto-34","Ex-Ramal SABOYA-CAPITAN PASTENE",ramal,EFE,1.676 mm,7,1920s,,,"Ramal en la Región de la Araucanía",7,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-35","Ruta sin titulo",ramal,,1.676 mm,1,,,,"Tramo muy corto sin identificar",1,Unknown,
+"auto-36","Ramal QUINO-GALVARINO",ramal,EFE,1.676 mm,44,1920s,1990s,"Ramal en la Región de la Araucanía","",44,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-37","Ramal Pua a Lonquimay",ramal,EFE,1.676 mm,53,1930s,,,"Ramal en la Región de la Araucanía hacia Lonquimay","",53,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-38","Ramal CAJON-CHERQUENCO",ramal,EFE,1.676 mm,87,1920s,1990s,"Ramal en la Región de la Araucanía","",87,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-39","Ramal TEMUCO-CARAHUE",ramal,EFE,1.676 mm,98,1930s,1990s,"Ramal en la Región de la Araucanía hacia Carahue","",98,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-40","Ramal FREIRE-TOLTEN",ramal,EFE,1.676 mm,25,1920s,1990s,"Ramal en la Región de la Araucanía","",25,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-41","Ramal FREIRE-CUNCO",ramal,EFE,1.676 mm,37,1930s,1990s,"Ramal en la Región de la Araucanía","",37,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-42","Linea 1",ramal,EFE,1.676 mm,16,1920s,,,"Línea no identificada en zona sur",16,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-43","Ramal Loncoche-Villarrica",ramal,EFE,1.676 mm,78,1947,,,"Ramal en la Región de la Araucanía. Construcción impulsó desarrollo regional","La construcción del ferrocarril a Villarrica con cabecera en Loncoche impulsó el desarrollo en 1947",78,South Chile,"Loncoche: Wikipedia"
+"auto-44","Ramal LANCO-PANGUIPULLI",ramal,EFE,1.676 mm,127,1930s,1990s,"Ramal en la Región de Los Ríos","",127,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-45","Ramal LANCO-PANGUIPULLI",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,127,South Chile,
+"auto-46","Ramal Antilhue - Valdivia",ramal,EFE,1.676 mm,40,1920s,,,"Ramal en la Región de Los Ríos",40,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-47","Ramal LOS LAGOS-RINIHUE",ramal,EFE,1.676 mm,46,1930s,,,"Ramal en la Región de Los Ríos hacia Lago Rinihue","",46,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-48","Ramal LA UNION-LAGO RANCO",ramal,EFE,1.676 mm,102,1920s,1990,"Ramal en la Región de Los Ríos. Parte del Ramal Cocule-Lago Ranco","Servicio de pasajeros cesó en 1983, carga en 1990, levantamiento de vía en 2004",102,South Chile,"Ramal Cocule-Lago Ranco: Wikipedia"
+"auto-49","Sub-Ramal CRUCERO-ENTRE LAGOS",ramal,EFE,1.676 mm,33,1920s,1960,"Sub-ramal del Ramal Cocule-Lago Ranco hacia Entre Lagos","Cesó operaciones en mayo de 1960 por terremoto. Levantamiento decretado en 2004",33,South Chile,"Ramal Cocule-Lago Ranco: Wikipedia"
+"auto-50","Ex-Ramal Osorno-Puerto Octay",ramal,EFE,1.676 mm,243,1910s,1990s,"Ramal en la Región de Los Lagos","",243,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-51","Ex-Ramal Osorno-Puerto Octay, empalme sur",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,348,South Chile,
+"auto-52","Ramal CORTE ALTO-LOS MUERMOS",ramal,EFE,1.676 mm,204,1930s,1990s,"Ramal en la Región de Los Lagos","",204,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-53","Empalme Oriente al Sur",troncal-sur,EFE,1.676 mm,217,1940s,,,"Empalme en la Red Troncal Sur","",217,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-54","Antiguo trazado sector Itahue",troncal-sur,EFE,1.676 mm,60,1920s,1980s,"Antiguo trazado en el sector Itahue de la Red Sur","",60,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-55","Antiguo trazado sector Rio Claro-Camarico",troncal-sur,EFE,1.676 mm,13,1910s,1970s,"Antiguo trazado en la zona de Río Claro y Camarico","",13,South Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-56","FFCC del Llano del Maipo",minero,Privado,1.435 mm,218,1910s,1970s,"Ferrocarril minero en la zona del Llano del Maipo","Trocha estándar (1435 mm) para ferrocarril minero",218,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-57","Ferrocarril Militar de PUENTE ALTO a EL VOLCAN",minero,Ejército de Chile,1.676 mm,198,1920s,1980s,"Ferrocarril militar para conexión con El Volcán","",198,Central Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-58","Red Troncal Norte",troncal-norte,EFE,1.000 mm,3294,1880s,1975,"Red principal del norte de Chile, trocha métrica","Cesó funciones el 16 de junio de 1975. Vías de trocha angosta (1 metro)",3294,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-59","Antiguo Trazado Red Troncal Norte",troncal-norte,EFE,1.000 mm,567,1890s,1975,"Antiguo trazado de la Red Norte","Cesó funciones el 16 de junio de 1975",567,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-60","Ex-Ramal de QUINQUIMO a PAPUDO",ramal,EFE,1.676 mm,27,1910,1975,"Ramal costero en la Región de Valparaíso","Concebido en 1904, trabajos comenzaron en 1908, inaugurado en 1910. Formó parte de la sección costa del Longitudinal Norte",27,Coastal Chile,"Ramal Quinquimo-Papudo: Wikipedia"
+"auto-61","Ramal CHOAPA-SALAMANCA",ramal,EFE,1.676 mm,222,1910s,,,"Ramal en la Región de Coquimbo. Puente Limáhuida y Puente Choapa construidos en 1914","",222,Northern Chile,"Ramal Choapa-Salamanca: Wikipedia"
+"auto-62","Ramal CHOAPA-SALAMANCA",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,222,Northern Chile,
+"auto-63","Antiguo trazado sector Alcaparrosa",troncal-norte,EFE,1.000 mm,55,1890s,1975,"Antiguo trazado en el sector Alcaparrosa","Cesó con la Red Norte en 1975",55,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-64","Tramo acceso estacion Ovalle",troncal-norte,EFE,1.000 mm,18,1900s,1975,"Tramo de acceso a la estación Ovalle","",18,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-65","Ramal a Puerto de Coquimbo",ramal,EFE,1.676 mm,172,1910s,1990s,"Ramal hacia el puerto de Coquimbo","",172,Coastal Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-66","Ramal a Puerto de Coquimbo",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,172,Coastal Chile,
+"auto-67","FFCC de Elqui",troncal-norte,EFE,1.000 mm,61,1900s,1975,"Ferrocarril del Valle de Elqui, parte de la Red Norte","",61,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-68","Ramal LLANOS DE SOTO-HUASCO",ramal,EFE,1.676 mm,214,1920s,1990s,"Ramal costero en la Región de Atacama","",214,Coastal Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-69","Ramal LLANOS DE SOTO-HUASCO",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,214,Coastal Chile,
+"auto-70","Ramal TOLEDO-CALDERA",ramal,EFE,1.676 mm,161,1910s,1990s,"Ramal minero en la Región de Atacama","",161,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-71","Ramal EMPALME 2 a CHANARAL",ramal,EFE,1.676 mm,61,1920s,1990s,"Ramal en la Región de Atacama","",61,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-72","Ramal EMPALME 2 a CHANARAL",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,61,Northern Chile,
+"auto-73","The Taltal Railway Company",minero,Taltal Railway Company Ltd,1.435 mm,57,1881,1956,"Ferrocarril salitrero de Taltal, compañía británica. Transportaba salitre desde oficinas a puerto","Fundada en Londres el 3 de junio de 1881. En 1956 pasó a Julio Rumié. Atendía oficinas Chile, Alemania y Flor de Chile. Trocha estándar (1435 mm)",57,Coastal Chile,"Historia del Ferrocarril Salitrero de Taltal: Amigosdeltren.cl"
+"auto-74","Ramal a PORTEZUELO",ramal,EFE,1.676 mm,25,1920s,1990s,"Ramal en la Región de Atacama","",25,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-75","Ruta sin titulo",ramal,,1.676 mm,14,,,,"Tramo sin identificar",14,Unknown,
+"auto-76","Ruta sin titulo",ramal,,1.676 mm,6,,,,"Tramo sin identificar",6,Unknown,
+"auto-77","Ruta sin titulo",ramal,,1.676 mm,3,,,,"Tramo muy corto sin identificar",3,Unknown,
+"auto-78","FCAB y FCAS",internacional,FCAB/FCAS,1.000 mm,194,1888,,,"Ferrocarril de Antofagasta a Bolivia (FCAB) y Ferrocarril de Antofagasta a Salta (FCAS)","FCAB fundado en 1888 como Antofagasta (Chili) and Bolivia Railway Company. Trocha métrica (1000 mm). Conecta con Ferrocarril Belgrano en Argentina y Andean Railway en Bolivia",194,Northern Chile,"Antofagasta plc: Wikipedia"
+"auto-79","Empalme Puerto ANTOFAGASTA",internacional,FCAB,1.000 mm,50,1890s,,,"Empalme en el puerto de Antofagasta para conexión con FCAB","",50,Coastal Chile,"FCAB: Wikipedia"
+"auto-80","Empalme al Norte",troncal-norte,EFE,1.000 mm,255,1900s,1975,"Empalme de la Red Troncal Norte","Cesó con la Red Norte en 1975",255,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-81","FCAB y FCAS",internacional,,1.000 mm,0,,,"Duplicate entry - review or DELETE",,194,Northern Chile,
+"auto-82","Ramal PAMPA - PRAT",minero,FCAB,1.000 mm,124,1920s,,,"Ramal minero de FCAB en la Región de Antofagasta","Trocha métrica (1000 mm)",124,Northern Chile,"FCAB: Wikipedia"
+"auto-83","Ramal PUERTO ANGAMOS",minero,Privado,1.000 mm,14,1980s,,,"Ramal industrial al puerto de Angamos","",14,Coastal Chile,"Puerto Angamos: Historia"
+"auto-84","Seccion Cambio de Direccion",troncal-norte,EFE,1.000 mm,57,1930s,1975,"Sección de la Red Troncal Norte","Cesó con la Red Norte en 1975",57,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-85","Empalme TOCO (Red Norte)",troncal-norte,EFE,1.000 mm,103,1930s,1975,"Empalme en la Red Troncal Norte","Cesó con la Red Norte en 1975",103,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-86","Seccion BARRILES-PEDRO DE VALDIVIA",troncal-norte,EFE,1.000 mm,502,1910s,1975,"Sección de la Red Troncal Norte entre Barrales y Pedro de Valdivia","Cesó con la Red Norte en 1975",502,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-87","Empalme Oriente",troncal-norte,EFE,1.000 mm,57,1920s,1975,"Empalme de la Red Troncal Norte","Cesó con la Red Norte en 1975",57,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-88","Ramal a Zapiga",ramal,EFE,1.676 mm,26,1930s,1990s,"Ramal en la Región de Antofagasta","",26,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-89","Ramal a Zapiga",ramal,,1.676 mm,0,,,"Duplicate entry - review or DELETE",,26,Northern Chile,
+"auto-90","Bajada Alternativa a Iquique",troncal-norte,EFE,1.000 mm,20,1940s,1975,"Bajada alternativa hacia Iquique en la Red Norte","Cesó con la Red Norte en 1975",20,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-91","Ferrocarril Azufrera Tacora",minero,Azufrera Tacora,1.435 mm,7,1940s,1980s,"Ferrocarril minero para transporte de azufre en la zona de Tacora","Trocha estándar (1435 mm)",7,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"
+"auto-92","Bajada a Aguas Calientes",internacional,Privado,1.435 mm,2,1920s,,,"Conexión hacia Aguas Calientes (possiblemente turístico)","Trocha estándar (1435 mm)",2,Northern Chile,"Historia del ferrocarril en Chile: Wikipedia"

@@ -94,13 +94,19 @@ const CITIES = [
 ];
 
 
-// Proyección equirectangular estilizada
+// Proyección equirectangular estilizada - rotada 90 grados para vista horizontal
 const PX = 26, PY = 26, PADX = 30, PADY = 30;
-const project = ([lon, lat]) => [PADX + (lon + 77.5) * PX * 0.92, PADY + (-lat - 17.3) * PY];
+const project = ([lon, lat]) => [PADX + (-lat - 17.3) * PY, PADY + (lon + 77.5) * PX * 0.92];
 
 const YEAR_MIN = 1850, YEAR_MAX = 2026;
 
-const fmt = (y) => (y === null ? "hoy" : String(y));
+const fmt = (y) => (y === null ? "—" : String(y));
+
+// Helper function to format year with decade indicator
+const fmtYear = (y) => {
+  if (y === null) return "—";
+  return String(y);
+};
 
 export default function App() {
   const [year, setYear] = useState(YEAR_MAX);
@@ -153,8 +159,8 @@ export default function App() {
     const svg = mapRef.current;
     if (svg) {
       const rect = svg.getBoundingClientRect();
-      const mouseX = (e.clientX - rect.left) / rect.width * 420 - 10;
-      const mouseY = (e.clientY - rect.top) / rect.height * 1100 - 10;
+      const mouseX = (e.clientX - rect.left) / rect.width * 1100 - 10;
+      const mouseY = (e.clientY - rect.top) / rect.height * 420 - 10;
       
       const newPanX = pan.x - (mouseX - pan.x) * (newZoom - zoom) / zoom;
       const newPanY = pan.y - (mouseY - pan.y) * (newZoom - zoom) / zoom;
@@ -171,8 +177,8 @@ export default function App() {
       if (svg) {
         const rect = svg.getBoundingClientRect();
         setDragStart({
-          x: (e.clientX - rect.left) / rect.width * 420 - 10 - pan.x,
-          y: (e.clientY - rect.top) / rect.height * 1100 - 10 - pan.y
+          x: (e.clientX - rect.left) / rect.width * 1100 - 10 - pan.x,
+          y: (e.clientY - rect.top) / rect.height * 420 - 10 - pan.y
         });
       }
     }
@@ -183,8 +189,8 @@ export default function App() {
     const svg = mapRef.current;
     if (svg) {
       const rect = svg.getBoundingClientRect();
-      const currentX = (e.clientX - rect.left) / rect.width * 420 - 10;
-      const currentY = (e.clientY - rect.top) / rect.height * 1100 - 10;
+      const currentX = (e.clientX - rect.left) / rect.width * 1100 - 10;
+      const currentY = (e.clientY - rect.top) / rect.height * 420 - 10;
       setPan({
         x: currentX - dragStart.x,
         y: currentY - dragStart.y
@@ -410,7 +416,7 @@ export default function App() {
           >
             <svg 
               ref={mapRef} 
-              viewBox="-10 -10 420 1100" 
+              viewBox="-10 -10 1100 420" 
               className="w-full block" 
               style={{ minWidth: 320, cursor: isPanning ? 'grabbing' : 'grab' }}
               onWheel={handleWheel}
@@ -425,7 +431,7 @@ export default function App() {
                 </filter>
               </defs>
               <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
-                <rect x={-10} y={-10} width={420} height={1100} fill="var(--map-bg)" />
+                <rect x={-10} y={-10} width={1100} height={420} fill="var(--map-bg)" />
               {/* Contorno de Chile - multiple polygons for mainland and all islands */}
               {CHILE_OUTLINE.map((polygon: Coordinate[], idx: number) => {
                 const polygonPath = polygon.map(project).map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
@@ -523,11 +529,33 @@ export default function App() {
                 const l = RAIL_DB.find((r) => r.id === hovered);
                 if (!l) return null;
                 const [x, y] = project(l.coords[Math.floor(l.coords.length / 2)]);
+                
+                // Calculate tooltip dimensions based on content
+                const nameWidth = l.name.length * 6;
+                const infoWidth = Math.max(
+                  (l.op ? l.op.length : 0) * 5,
+                  l.gauge.length * 4,
+                  100
+                );
+                const totalWidth = Math.min(320, 24 + Math.max(nameWidth, infoWidth));
+                
+                // Calculate lines needed
+                const lines = [
+                  l.name,
+                  `${fmtYear(l.opened)} – ${fmtYear(l.closed)}`,
+                  l.op,
+                  `${l.km} km · ${l.gauge}`
+                ].filter(line => line && line !== '—');
+                
+                const tooltipHeight = 18 + lines.length * 12;
+                
                 return (
                   <g>
-                    <rect x={x + 8} y={y - 30} width={Math.min(230, 24 + l.name.length * 5.6)} height={34} rx={5} fill="var(--bg-secondary)" opacity={0.95} />
-                    <text x={x + 16} y={y - 17} fontSize={10 / zoom} fill="var(--text-primary)" fontWeight="bold">{l.name}</text>
-                    <text x={x + 16} y={y - 6} fontSize={9 / zoom} fill="var(--text-secondary)">{fmt(l.opened)} – {fmt(l.closed)} · {l.km} km</text>
+                    <rect x={x + 8} y={y - tooltipHeight - 8} width={totalWidth} height={tooltipHeight + 6} rx={5} fill="var(--bg-secondary)" opacity={0.95} />
+                    <text x={x + 16} y={y - tooltipHeight + 12} fontSize={10 / zoom} fill="var(--text-primary)" fontWeight="bold">{l.name}</text>
+                    <text x={x + 16} y={y - tooltipHeight + 24} fontSize={9 / zoom} fill="var(--text-secondary)">{fmtYear(l.opened)} – {fmtYear(l.closed)}</text>
+                    {l.op && <text x={x + 16} y={y - tooltipHeight + 36} fontSize={8 / zoom} fill="var(--text-secondary)">Operador: {l.op}</text>}
+                    <text x={x + 16} y={y - tooltipHeight + 48} fontSize={8 / zoom} fill="var(--text-secondary)">{l.km} km · {l.gauge}</text>
                   </g>
                 );
               })()}
@@ -568,11 +596,14 @@ export default function App() {
                   </span>
                 </div>
                 <dl className="mt-4 text-sm divide-y divide-slate-100">
-                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Inauguración</dt><dd className="font-medium font-tech">{l.opened}</dd></div>
-                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Cierre</dt><dd className="font-medium font-tech">{l.closed === null ? "— (activa)" : l.closed}</dd></div>
+                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Inauguración</dt><dd className="font-medium font-tech">{fmtYear(l.opened)}</dd></div>
+                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Cierre</dt><dd className="font-medium font-tech">{l.closed === null ? "— (activa)" : fmtYear(l.closed)}</dd></div>
                   <div className="flex justify-between py-1.5"><dt className="text-slate-500">Longitud</dt><dd className="font-medium font-tech">{l.km} km</dd></div>
                   <div className="flex justify-between py-1.5"><dt className="text-slate-500">Trocha</dt><dd className="font-medium text-right">{l.gauge}</dd></div>
-                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Operador</dt><dd className="font-medium text-right">{l.op}</dd></div>
+                  <div className="flex justify-between py-1.5"><dt className="text-slate-500">Operador</dt><dd className="font-medium text-right">{l.op || "—"}</dd></div>
+                  {l.notes && <div className="flex justify-between py-1.5"><dt className="text-slate-500">Notas</dt><dd className="font-medium text-right text-sm">{l.notes}</dd></div>}
+                  {l.region_guess && <div className="flex justify-between py-1.5"><dt className="text-slate-500">Región</dt><dd className="font-medium text-right text-sm">{l.region_guess}</dd></div>}
+                  {l.source && <div className="flex justify-between py-1.5"><dt className="text-slate-500">Fuente</dt><dd className="font-medium text-right text-xs">{l.source}</dd></div>}
                 </dl>
                 <p className="mt-3 text-sm text-slate-600 leading-relaxed">{l.desc}</p>
               </div>
