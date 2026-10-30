@@ -378,6 +378,31 @@
       top: 56px;
     }
   }
+
+  /* Animación de pulso para el resaltado de búsqueda */
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* Estilos para gráficos */
+  .graph-bar-positive {
+    background: linear-gradient(to top, #10b981, #34d399);
+    transition: height 0.3s ease;
+  }
+
+  .graph-bar-negative {
+    background: linear-gradient(to top, #ef4444, #f87171);
+    transition: height 0.3s ease;
+  }
 }
 
 /* ========================================
