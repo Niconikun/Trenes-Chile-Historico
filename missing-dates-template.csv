@@ -19,7 +19,7 @@ id,name,cat,op,gauge,km,opened,closed,desc,notes,coords_count,region_guess
 "auto-17","Ramal PAINE a TALAGANTE",ramal,,1.676 mm,0,,,,"",245,Central Chile
 "auto-18","Ramal Rancagua - Coltauco",ramal,,1.676 mm,0,,,,"",71,Central Chile
 "auto-19","Ruta Tentativa a SEWELL",ramal,,1.676 mm,0,,,,"",13,Central Chile
-"auto-20","Ramal Particular Rancagua - Sewell",ramal,,1.676 mm,0,,,,"",253,Central Chile
+"auto-20","Ramal Particular Rancagua - Sewell",ramal,,1.676 mm,70,1907,1978,,"",253,Central Chile
 "auto-21","RAMAL PELEQUEN - EL MANZANO",ramal,,1.676 mm,0,,,,"",102,Central Chile
 "auto-22","Ex-Estacion Palmilla",ramal,,1.676 mm,0,,,,"",4,Central Chile
 "auto-23","ANTIGUO TRAZADO CHIMBARONGO-TENO",ramal,,1.676 mm,0,,,,"",24,Central Chile
