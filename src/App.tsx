@@ -386,6 +386,21 @@ export default function App() {
         </div>
       </div>
 
+      {/* Leyenda de estados de abandono */}
+      {showGhost && (
+        <div className="mx-4 lg:mx-6 mb-4">
+          <div className="flex flex-wrap gap-4 items-center justify-center text-xs">
+            <span className="font-semibold text-[var(--text-secondary)] mr-4">Estados de las vías cerradas:</span>
+            {Object.entries(ABANDONED_STATUSES).filter(([status]) => status !== 'active').map(([status, info]) => (
+              <div key={status} className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: info.color }} />
+                <span className="text-[var(--text-secondary)]">{info.icon} {info.label.split('(')[0].trim()}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Gráfico de cambios anuales de km */}
       <div className="graph-container mx-4 lg:mx-6 mb-4">
         <h3 className="font-semibold text-[var(--text-primary)] mb-3">
@@ -481,11 +496,25 @@ export default function App() {
                   />
                 );
               })}
-              {/* Líneas cerradas (fantasmas) */}
-              {showGhost && visible.filter((l) => lineState(l) === "closed").map((l) => (
-                <polyline key={"g" + l.id} points={polyline(l.coords)} fill="none" stroke="var(--text-muted)"
-                  strokeWidth={1.0 / zoom} strokeDasharray="4 4" opacity={0.6} />
-              ))}
+              {/* Líneas cerradas (con color por estado de abandono) */}
+              {showGhost && visible.filter((l) => lineState(l) === "closed").map((l) => {
+                const statusColor = ABANDONED_STATUSES[l.abandoned_status || 'unknown']?.color || "var(--text-muted)";
+                return (
+                  <polyline 
+                    key={"g" + l.id} 
+                    points={polyline(l.coords)} 
+                    fill="none" 
+                    stroke={statusColor}
+                    strokeWidth={1.5 / zoom} 
+                    strokeDasharray="4 4" 
+                    opacity={0.7}
+                    className="cursor-pointer"
+                    onMouseEnter={() => setHovered(l.id)}
+                    onMouseLeave={() => setHovered(null)}
+                    onClick={() => setSelected(l.id)}
+                  />
+                );
+              })}
               {/* Líneas activas */}
               {visible.filter((l) => lineState(l) === "active").map((l) => (
                 <g key={l.id}>
